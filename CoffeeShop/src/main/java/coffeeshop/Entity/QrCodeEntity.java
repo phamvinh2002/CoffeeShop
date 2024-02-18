@@ -11,7 +11,7 @@ public class QrCodeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    private String TableIndex;
+    private String tableIndex;
 
     private String content;
     private String imagePath;
@@ -28,11 +28,11 @@ public class QrCodeEntity {
     }
 
     public String getTableIndex() {
-        return TableIndex;
+        return tableIndex;
     }
 
     public void setTableIndex(String tableIndex) {
-        TableIndex = tableIndex;
+        this.tableIndex = tableIndex;
     }
 
     public String getContent() {

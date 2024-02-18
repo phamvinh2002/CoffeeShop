@@ -10,13 +10,10 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +30,7 @@ public class QrCodeServiceIplm implements QrCodeService {
     public QrCodeEntity generateQrCodeAndSave(String content, String tableIndex) {
         // Tạo đường dẫn ảnh QR code
         String imgFilePath = generateQRCodeImage(content,tableIndex);
-        int indexOfQrCodeImage = imgFilePath.indexOf("\\QrCodeImage");
+        int indexOfQrCodeImage = imgFilePath.indexOf("\\upload");
         String imageUrl = null;
         if (indexOfQrCodeImage != -1){
            imageUrl = imgFilePath.substring(indexOfQrCodeImage);
@@ -64,7 +61,7 @@ public class QrCodeServiceIplm implements QrCodeService {
 
             // Tạo đường dẫn đến thư mục lưu ảnh QR code
 
-            Path path = FileSystems.getDefault().getPath("./src/main/resources/static/QrCodeImage"); //thư muc có tên QR code
+            Path path = FileSystems.getDefault().getPath("./src/main/upload/QrCodeImage"); //thư muc có tên QR code
 
 
             // Kiểm tra và tạo thư mục nếu chưa tồn tại
@@ -93,7 +90,10 @@ public class QrCodeServiceIplm implements QrCodeService {
         return qrCodeRepository.findAllByOrderByContentAsc();
     }
 
-
+    @Override
+    public QrCodeEntity findByTableIndex(String index) {
+        return qrCodeRepository.findByTableIndex(index);
+    }
 
 }
 

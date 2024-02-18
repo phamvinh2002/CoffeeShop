@@ -3,6 +3,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" href="/CSS/QrCode.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta charset="UTF-8">
     <title>QR Code Page</title>
 </head>
@@ -25,9 +26,9 @@
             </div>
         </section>
         <section class="infor">
-            <form class="createQR" th:action="@{generateQR}" method="post" th:object="${Qr}">
+            <form class="createQR" method="post" th:object="${Qr}">
                 <label class="form-label">Nhập số bàn muốn tạo</label>
-                <input type="text" th:name = "indextable">
+                <input id="tableIndex" type="text" th:name = "indextable">
                 <button type="submit" class="btn btn-primary">Tạo QR mới</button>
             </form>
             <div th:each="qrcode: ${listQRCode}" class="qrCode" th:value="${qrcode.tableIndex}">
@@ -42,5 +43,36 @@
         </section>
     </main>
 </aside>
+<script>
+    $(document).ready(function() {
+        $(".createQR").submit(function(e) {
+            e.preventDefault();
+
+            var tableIndex = $("#tableIndex").val();
+            var formData = new FormData();
+
+            if (tableIndex.trim() ==="") {
+                alert("Vui lòng nhập tên bàn");
+                return;
+            }
+
+            formData.append("index", tableIndex);
+
+            $.ajax({
+                type: "POST",
+                url: "/generateQR",
+                data:  formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    window.location.href = response.url;
+                },
+                error: function() {
+                    alert("Tạo mới thất bại");
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

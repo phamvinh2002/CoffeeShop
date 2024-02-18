@@ -10,4 +10,6 @@ public interface QrCodeService {
 
 
     List<QrCodeEntity> findAll();
+
+    QrCodeEntity findByTableIndex(String index);
 }
