@@ -1,0 +1,119 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    display: flex;
+}
+
+.aside-left{
+    width: 100%;
+    margin: 0 24px;
+    background-color: bisque;
+}
+header{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    background-color: chartreuse;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    text-align: center;
+    color: saddlebrown;
+    width: 20%;
+}
+.logo_link {
+    text-decoration: none;
+    color: saddlebrown;
+}
+
+header form{
+    display: flex;
+    width: 65%;
+    height: 28px;
+
+}
+header form input {
+    width: 70%;
+    border-radius: 4px;
+    padding-left: 20px;
+}
+.btn-search{
+    width: 80px;
+    margin: 0 16px;
+    border-radius: 4px;
+}
+main {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    padding-top: 8px;
+    /*height: 680px;*/
+}
+.product-item {
+    display: block;
+    width: 15%;
+    margin-left: 2%;
+    border: solid 1px #111;
+    border-radius: 8px;
+    text-align: center;
+    background-color: white;
+    margin-top: 20px;
+    height: 300px;
+}
+.product-image{
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.btn-order {
+    width: 80px;
+    height: 24px;
+    background-color: chocolate;
+    color: aliceblue;
+    margin: 8px 0;
+}
+.btn-order:hover {
+    cursor: pointer;
+}
+
+.bill {
+    width: 120px;
+    text-align: center;
+
+}
+.cart {
+    text-decoration: none;
+    color: brown;
+    font-size: 15px;
+}
+
+.pagination {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding-right: 24px;
+}
+.pagination li {
+    background-color: aliceblue;
+    width: 32px;
+    height: 32px;
+    margin: 4px;
+    text-align: center;
+    border: solid 1px aliceblue;
+    padding-top: 4px;
+}
+
+.pagination li:hover {
+    cursor: pointer;
+}
+
+.pagination li a {
+    text-decoration: none;
+    font-size: 1.4rem;
+}

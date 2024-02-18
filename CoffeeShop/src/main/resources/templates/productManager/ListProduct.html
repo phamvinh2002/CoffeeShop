@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List Product</title>
+    <link rel="stylesheet" href="/CSS/ListProduct.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+<aside class="aside-left">
+    <header>
+        <div class="logo">
+            <a class="logo_link" href="/homepage">
+                <h1>VHCOFFEE</h1>
+            </a>
+        </div>
+    </header>
+    <main>
+        <section class="category">
+            <div class="category_list">
+                <a href="/homepage" class="category_item">Danh sách bàn</a>
+                <a href="/product" class="category_item">Quản lý sản phẩm</a>
+                <a href="/viewQRCode" class="category_item">Quản lý QRCode</a>
+                <a href="/revenue" class="category_item">Báo cáo doanh thu</a>
+            </div>
+        </section>
+        <section class="inform">
+            <div class="create_product">
+                <a href="product/create">Tạo sản phẩm mới</a>
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col"> Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product,index:${products}">
+                    <td class="ID" th:text="${index.index+1}"></td>
+                    <td th:text="${product.productname}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td class="button">
+                        <a th:href="'/product/update/'+${product.id}">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+
+                        <form th:action="@{product/delete}" th:method="post" th:object="${product}">
+                            <input type="hidden" name="productID" th:value="${product.id}"/>
+                            <button class="btn btn-success"  type="submit">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div th:if="${products.totalPages > 1}">
+                <ul class="pagination">
+                    <li th:each="i : ${#numbers.sequence(1, products.totalPages)}" th:class="${products.number == i} ? 'active' : ''">
+                        <a th:href="@{${'/product?page=' + i}}" th:text="${i}"></a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+</aside>>
+</body>
+</html>

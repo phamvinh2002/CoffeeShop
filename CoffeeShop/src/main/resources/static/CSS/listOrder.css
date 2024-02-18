@@ -1,0 +1,51 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    display: flex;
+    font-family: "Times New Roman";
+}
+
+.aside-left{
+    width: 100%;
+    margin: 0 24px;
+    background-color: white;
+}
+header{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    background-color: chartreuse;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    padding-top: 6px;
+    text-align: center;
+    color: saddlebrown;
+    width: 20%;
+}
+.logo_link {
+    text-decoration: none;
+    color: saddlebrown;
+}
+
+.logo_link:hover {
+    text-decoration: none;
+    color: saddlebrown;
+}
+
+.logo h1 {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.table_index {
+    display: flex;
+}
+.table_index h5{
+    margin-left: 12px;
+}

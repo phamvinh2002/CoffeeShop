@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <meta charset="UTF-8">
+    <title>Menu</title>
+    <link rel="shortcut icon" href="/Screenshot%202024-01-26%20221206.png" type="image/x-icon">
+    <link rel="stylesheet" href="/CSS/menu.css">
+</head>
+<body>
+<aside class="aside-left">
+    <header>
+        <div class="logo">
+            <a class="logo_link" th:href="@{'/'+${index}+'/menu'}">
+                <h1>VHCOFFEE</h1>
+            </a>
+        </div>
+        <form th:action= "@{'/'+${index}+'/menu'}" th:method="get">
+            <input placeholder="Bạn muốn tìm món nào" type="text" name="search" th:value="${search}"/>
+            <button class="btn-search" type="submit">Tìm kiếm</button>
+        </form>
+        <div class="bill">
+            <a class="cart" th:href= "@{'/'+${index}+'/cart/view'}">
+                <h3 th:text="'Hóa đơn (' + ${itemquantity} + ')'"></h3>
+            </a>
+        </div>
+    </header>
+    <main>
+        <div th:each="pro: ${products.content}" class="product-item">
+            <img class="product-image" th:src="@{${pro.urlimage}}" alt="No Image">
+            <h3 th:text="${pro.productname}"></h3>
+            <h3 th:text="${#numbers.formatDecimal(pro.price,0,'POINT',0,'COMMA')}"></h3>
+            <form class="addToCart" th:action="@{'/'+${index}+'/cart/add'}" th:method="post" th:object="${pro}">
+                <input type="hidden" name="pro" th:value="${pro.id}">
+                <button class="btn-order" type="submit">Đặt món</button>
+            </form>
+        </div>
+    </main>
+    <div th:if="${products.totalPages > 1}">
+        <ul class="pagination">
+            <li th:each="i : ${#numbers.sequence(1, products.totalPages)}" th:class="${products.number == i} ? 'active' : ''">
+                <a th:href="@{'/'+${index}+ ${'/menu?page=' + i + '&size=' + products.size}}" th:text="${i}"></a>
+            </li>
+        </ul>
+    </div>
+
+</aside>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+
+    const formAddToCarts = document.querySelectorAll('.addToCart')
+    formAddToCarts.forEach((form) => {
+        form.addEventListener('submit', (e) => {
+            const action = form.getAttribute('action')
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: `http://localhost:5000${action}`,
+                data: {
+                    pro: form.querySelector('input[name="pro"]').value
+                },
+                success: function(result){
+                    const h3 = document.querySelector('.cart h3')
+                    h3.innerHTML = `Hóa đơn (${result.numberOfItems})`
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            });
+        })
+    })
+
+</script>
+</body>
+</html>

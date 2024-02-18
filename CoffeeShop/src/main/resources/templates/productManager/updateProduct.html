@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/CSS/UpdateProduct.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Update Product</title>
+</head>
+<body>
+<aside class="aside-left">
+    <header>
+        <div class="logo">
+            <a class="logo_link" href="/homepage">
+                <h1>VHCOFFEE</h1>
+            </a>
+        </div>
+    </header>
+    <main>
+        <div class="form" th:object="${product}">
+            <input type="hidden" id="productId" th:value="${product.id}"/>
+            <label>Tên sản phẩm</label>
+            <input type="text" id="productName" th:value="${product.productname}"/>  <br>
+            <label>Giá</label>
+            <input type="text" id="productPrice" th:value="${product.price}"/> <br>
+            <label>Loại</label>
+            <select id="productType">
+                <option value="Đồ uống">Đồ uống</option>
+                <option value="Đồ ăn vặt">Đồ ăn vặt</option>
+            </select> <br>
+            <button class="btn">Lưu thông tin</button>
+            <div id="response"></div>
+        </div>
+    </main>
+</aside>
+
+<script>
+    $(document).ready(function() {
+        $(".btn").click(function() {
+            var productId = $("#productId").val();
+            var productName = $("#productName").val();
+            var productPrice = $("#productPrice").val();
+            var productType = $("#productType").val();
+
+            if ((productName.trim() === "")||(productPrice).trim()==="") {
+                alert("Dữ liệu không được trống.");
+                return;
+            }
+
+            $.ajax({
+                type: "Put",
+                url: "/product/update",
+                contentType: "application/json",
+                data: JSON.stringify({ id: productId, productname: productName, price: productPrice, producttype: productType}),
+                success: function(response) {
+                    window.location.href = response.url;
+                },
+                error: function() {
+                    alert("Cập nhật thất bại");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

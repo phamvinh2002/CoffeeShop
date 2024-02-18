@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/CSS/QrCode.css">
+    <meta charset="UTF-8">
+    <title>QR Code Page</title>
+</head>
+<body>
+<aside class="aside-left">
+    <header>
+        <div class="logo">
+            <a class="logo_link" href="/homepage">
+                <h1>VHCOFFEE</h1>
+            </a>
+        </div>
+    </header>
+    <main>
+        <section class="category">
+            <div class="category_list">
+                <a href="/homepage" class="category_item">Danh sách bàn</a>
+                <a href="/product" class="category_item">Quản lý sản phẩm</a>
+                <a href="/viewQRCode" class="category_item">Quản lý QRCode</a>
+                <a href="/revenue" class="category_item">Báo cáo doanh thu</a>
+            </div>
+        </section>
+        <section class="infor">
+            <form class="createQR" th:action="@{generateQR}" method="post" th:object="${Qr}">
+                <label class="form-label">Nhập số bàn muốn tạo</label>
+                <input type="text" th:name = "indextable">
+                <button type="submit" class="btn btn-primary">Tạo QR mới</button>
+            </form>
+            <div th:each="qrcode: ${listQRCode}" class="qrCode" th:value="${qrcode.tableIndex}">
+                <div class="order_detail">
+                    <img th:src="${qrcode.imagePath}" class="table-image">
+                    <div class="title">
+                        <h3>Bàn số: </h3>
+                        <h3 class="table_index" th:text="${qrcode.tableIndex}"> </h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</aside>
+</body>
+</html>

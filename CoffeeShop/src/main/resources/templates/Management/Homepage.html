@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/CSS/homepage.css">
+    <title>Trang quản lý </title>
+</head>
+<body>
+<aside class="aside-left">
+    <header>
+        <div class="logo">
+            <a class="logo_link" href="/homepage">
+                <h1>VHCOFFEE</h1>
+            </a>
+        </div>
+    </header>
+    <main>
+        <section class="category">
+            <div class="category_list">
+                <a href="/homepage" class="category_item">Danh sách bàn</a>
+                <a href="/product" class="category_item">Quản lý sản phẩm</a>
+                <a href="/viewQRCode" class="category_item">Quản lý QRCode</a>
+                <a href="/revenue" class="category_item">Báo cáo doanh thu</a>
+            </div>
+        </section>
+        <section class="infor">
+            <div th:each="qrcode: ${listQrCode}" class="qrCode" th:value="${qrcode.tableIndex}">
+                <a th:href="'/homepage/'+${qrcode.tableIndex}" class="order_detail">
+                    <img src="/TableImage/table.jpg" class="table-image">
+                    <div class="title">
+                        <h3>Bàn số: </h3>
+                        <h3 class="table_index" th:text="${qrcode.tableIndex}"> </h3>
+                    </div>
+                    <p th:class="${qrcode.tableIndex} > 0 ? 'table'+${qrcode.tableIndex} : '' " th:text="0"></p>
+                </a>
+
+            </div>
+        </section>
+    </main>
+
+</aside>
+    <script>
+        var stompClient = null;
+        function connect() {
+            var socket = new SockJS('/websocket');
+            stompClient = Stomp.over(socket);
+            // var ws = new WebSocket('ws://localhost:8080/websocket');
+            // stompClient = Stomp.client(ws);
+
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+
+                // Subscribe để nhận thông tin giỏ hàng, '/topic/sendData' là địa chỉ gửi dữ liệu lên từ khách hàng
+                stompClient.subscribe('/topic/sendData', response => {
+                        const expectedData = response.body;
+                        const listQRCode = document.querySelectorAll(".qrCode");
+                        let listcount = {};
+                        listQRCode.forEach((qrcode,index) => {
+                                 var currentData = qrcode.getAttribute("value");
+                                var countDisplay = document.querySelector(".table"+currentData);
+                                var count = index;
+                                listcount[count] = parseInt(countDisplay.textContent);
+                                console.log(expectedData);
+                                if (currentData === expectedData) {
+                                    listcount[count]++;
+
+                                    qrcode.addEventListener("click", function() {
+                                        // Đặt lại giá trị của biến count khi người dùng nhấn vào thẻ div
+                                        listcount[count] = 0;
+                                        countDisplay.textContent = listcount[count];
+                                    });
+                                    countDisplay.textContent = listcount[count];
+                                }
+                                if ( listcount[count] > 0){
+                                    countDisplay.style.display = "block";
+                                } else {
+                                    countDisplay.style.display = "none";
+                                }
+                            });
+
+                        })
+                    }
+                );
+        }
+        connect();
+    </script>
+</body>
+</html>

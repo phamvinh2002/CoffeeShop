@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/CSS/UpdateProduct.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Thêm mới sản phẩm</title>
+</head>
+<body>
+<aside class="aside-left">
+    <header>
+        <div class="logo">
+            <a class="logo_link" href="/homepage">
+                <h1>VHCOFFEE</h1>
+            </a>
+        </div>
+    </header>
+    <main>
+        <form class="form" th:method="post" enctype="multipart/form-data">
+            <label>Tên sản phẩm</label>
+            <input type="text" id="productName" name="name" />  <br>
+            <label>Giá</label>
+            <input type="text" id="productPrice" name="price"/> <br>
+            <label>Loại</label>
+            <select id="productType" name="type">
+                <option value="Đồ uống">Đồ uống</option>
+                <option value="Đồ ăn vặt">Đồ ăn vặt</option>
+            </select> <br>
+            <input type="file" id="image" name="image" accept="image/*" required>
+            <button class="btn btn-success" type="submit">Lưu thông tin</button>
+        </form>
+    </main>
+</aside>
+
+<script>
+    $(document).ready(function() {
+        $(".form").submit(function(e) {
+            e.preventDefault();
+
+            var productName = $("#productName").val();
+            var productPrice = $("#productPrice").val();
+            var productType = $("#productType").val();
+            var formData = new FormData();
+            var imageFile = $("#image")[0].files[0]; // Lấy file ảnh từ input
+
+            if ((productName.trim() ==="")||(productPrice).trim()==="") {
+                alert("Dữ liệu không được trống.");
+                return;
+            }
+            formData.append("image", imageFile);
+            formData.append("name", productName);
+            formData.append("price", productPrice);
+            formData.append("type", productType);
+
+            $.ajax({
+                type: "POST",
+                url: "/product/create",
+                data:  formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    window.location.href = response.url;
+                },
+                error: function() {
+                    alert("Tạo mới thất bại")
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

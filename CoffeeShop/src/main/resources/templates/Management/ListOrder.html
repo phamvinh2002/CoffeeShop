@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/CSS/listOrder.css">
+    <title>Danh sách Order</title>
+</head>
+<body>
+<aside class="aside-left">
+    <header>
+        <div class="logo">
+            <a class="logo_link" href="/homepage">
+                <h1>VHCOFFEE</h1>
+            </a>
+        </div>
+        <div class="table_index">
+            <h5>Bàn số </h5>
+            <h5 th:text="${tableIndex}"></h5>
+        </div>
+
+    </header>
+    <main>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Thời gian</th>
+                <th scope="col">Thanh toán</th>
+                <th scope="col">Phục vụ</th>
+                <th scope="col">Xem chi tiết</th>
+                <th scope="col">Xóa Order</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order,index:${listOrder}">
+                <td class="ID" th:text="${index.index+1}"></td>
+                <td th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                <td th:if="${order.paymentStatus} == 0">
+                    <form th:action="@{${tableIndex}+'/payment'}" th:method="post" th:object="${order}">
+                        <input type="hidden" name="orderID" th:value="${order.id}"/>
+                        <button class="btn btn-success"  type="submit">Thanh toán</button>
+                    </form>
+                </td>
+                <td th:unless="${order.paymentStatus} == 0">
+                    <button class="btn btn-secondary" disabled>Đã thanh toán</button>
+                </td>
+                <td th:if="${order.serveStatus} == 0">
+                    <form th:action="@{${tableIndex}+'/serve'}" th:method="post" th:object="${order}">
+                        <input type="hidden" name="serveID" th:value="${order.id}"/>
+                        <button class="btn btn-success" type="submit">Phục vụ</button>
+                    </form>
+                </td>
+                <td th:unless="${order.serveStatus} == 0">
+                    <button class="btn btn-secondary" disabled>Đã phục vụ</button>
+                </td>
+                <td>
+                    <form th:action="@{${tableIndex}+'/viewDetail'}" th:method="post" th:object="${order}">
+                        <input type="hidden" name="detailID" th:value="${order.id}"/>
+                        <button class="btn btn-success" type="submit">Xem chi tiết</button>
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{${tableIndex}+'/deleteOrder'}" th:method="post" th:object="${order}">
+                        <input type="hidden" name="deleteID" th:value="${order.id}"/>
+                        <button class="btn btn-success" type="submit">Xóa Order</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</aside>
+</body>
+</html>

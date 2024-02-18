@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>Chi tiết Order</title>
+    <link rel="stylesheet" href="/CSS/listOrder.css">
+</head>
+<body>
+<aside class="aside-left">
+    <header>
+        <div class="logo">
+            <a class="logo_link" href="/homepage">
+                <h1>VHCOFFEE</h1>
+            </a>
+        </div>
+        <div class="table_index">
+            <h5>Bàn số </h5>
+            <h5 th:text="${tableIndex}"></h5>
+        </div>
+
+    </header>
+    <main>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">Sản phẩm</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Giá</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="detail,index:${listOrderDetail}">
+                <td class="ID" th:text="${index.index+1}"></td>
+                <td th:text="${detail.getProductEntity().productname}"></td>
+                <td th:text="${detail.quantity}"></td>
+                <td th:text="${detail.price}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</aside>
+
+</body>
+</html>
