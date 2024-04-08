@@ -20,7 +20,6 @@ import java.io.IOException;
 @RequestMapping("/product")
 public class ProductManagerController {
 
-
     @Autowired
     private ProductServer productServer;
 

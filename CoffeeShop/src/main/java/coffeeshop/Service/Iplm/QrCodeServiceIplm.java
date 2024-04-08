@@ -11,6 +11,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -26,6 +27,7 @@ public class QrCodeServiceIplm implements QrCodeService {
     private QrCodeRepository qrCodeRepository;
 
 
+    @Transactional
     @Override
     public QrCodeEntity generateQrCodeAndSave(String content, String tableIndex) {
         // Tạo đường dẫn ảnh QR code

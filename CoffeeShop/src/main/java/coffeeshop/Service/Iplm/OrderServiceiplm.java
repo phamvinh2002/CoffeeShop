@@ -7,6 +7,7 @@ import coffeeshop.Repository.OrderRepository;
 import coffeeshop.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public class OrderServiceiplm implements OrderService {
 
     @Autowired
     private OrderDatailRepository orderDatailRepository;
+
+    @Transactional
     @Override
     public void save(OrderEntity order) {
         orderRepository.save(order);
